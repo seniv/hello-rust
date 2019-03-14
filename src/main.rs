@@ -1,20 +1,9 @@
-extern crate actix_web;
-use actix_web::{server, App, HttpRequest};
+extern crate reqwest;
 
-fn index(_req: &HttpRequest) -> &'static str {
-    "Hello world!"
-}
+fn main() -> Result<(), Box<std::error::Error>> {
+    let resp: String = reqwest::get("https://ifconfig.me/ip")?
+        .text()?;
 
-fn create_app() -> App {
-    App::new()
-        .resource("/", |r| r.f(index))
-}
-
-fn main() {
-    println!("Starting the server at port 3000...");
-
-    server::new(create_app)
-        .bind("127.0.0.1:3000")
-        .unwrap()
-        .run();
+    println!("Good day, sir! \nYour IP address: {}", resp);
+    Ok(())
 }
