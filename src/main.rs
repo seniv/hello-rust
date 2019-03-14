@@ -1,20 +1,13 @@
-extern crate actix_web;
-use actix_web::{server, App, HttpRequest};
+extern crate reqwest;
 
-fn index(_req: &HttpRequest) -> &'static str {
-    "Hello world!"
-}
+use std::collections::HashMap;
 
-fn create_app() -> App {
-    App::new()
-        .resource("/", |r| r.f(index))
-}
+fn main() -> Result<(), Box<std::error::Error>> {
+    let resp: HashMap<String, String> = reqwest::get("https://httpbin.org/ip")?
+        .json()?;
 
-fn main() {
-    println!("Starting the server at port 3000...");
-
-    server::new(create_app)
-        .bind("127.0.0.1:3000")
-        .unwrap()
-        .run();
+    let iterable = resp["origin"].split(",");
+    let collection: Vec<_> = iterable.collect();
+    println!("Hello! \nYour IP address: {}", collection[0]);
+    Ok(())
 }
