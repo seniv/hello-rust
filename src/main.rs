@@ -5,13 +5,15 @@ fn index(_req: &HttpRequest) -> &'static str {
     "Hello world!"
 }
 
-fn main() {
-    let app = || App::new()
-        .resource("/", |r| r.f(index));
+fn create_app() -> App {
+    App::new()
+        .resource("/", |r| r.f(index))
+}
 
+fn main() {
     println!("Starting the server at port 3000...");
 
-    server::new(app)
+    server::new(create_app)
         .bind("127.0.0.1:3000")
         .unwrap()
         .run();
