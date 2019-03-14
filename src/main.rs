@@ -1,11 +1,18 @@
-use ferris_says::say;
-use std::io::{stdout, BufWriter};
+extern crate actix_web;
+use actix_web::{server, App, HttpRequest};
+
+fn index(_req: &HttpRequest) -> &'static str {
+    "Hello world!"
+}
 
 fn main() {
-    let stdout = stdout();
-    let out = b"Hello fellow Rustaceans!";
-    let width = 25;
+    let app = || App::new()
+        .resource("/", |r| r.f(index));
 
-    let mut writer = BufWriter::new(stdout.lock());
-    say(out, width, &mut writer).unwrap();
+    println!("Starting the server at port 3000...");
+
+    server::new(app)
+        .bind("127.0.0.1:3000")
+        .unwrap()
+        .run();
 }
