@@ -1,20 +1,42 @@
-extern crate actix_web;
-use actix_web::{server, App, HttpRequest};
-
-fn index(_req: &HttpRequest) -> &'static str {
-    "Hello world!"
-}
-
-fn create_app() -> App {
-    App::new()
-        .resource("/", |r| r.f(index))
-}
+use std::io;
+use std::cmp::Ordering;
+use rand::Rng;
 
 fn main() {
-    println!("Starting the server at port 3000...");
+    println!("Guess the number!");
 
-    server::new(create_app)
-        .bind("127.0.0.1:3000")
-        .unwrap()
-        .run();
+    let secret_number = rand::thread_rng().gen_range(1, 101);
+    let exit_phrases = ["q", "quit", "exit", "stop"];
+
+    loop {
+        println!("Please input your guess.");
+
+        let mut guess = String::new();
+
+        io::stdin().read_line(&mut guess)
+            .expect("Failed to read line");
+
+        let guess = guess.trim();
+
+        if exit_phrases.contains(&guess) {
+            println!("Bye! 👋");
+            break;
+        }
+
+        let guess: u32 = match guess.parse() {
+            Ok(num) => num,
+            Err(_) => continue,
+        };
+
+        print!("You guessed {} and ", guess);
+
+        match guess.cmp(&secret_number) {
+            Ordering::Less => println!("it's too small!🔽"),
+            Ordering::Greater => println!("it's too big!🔼"),
+            Ordering::Equal => {
+                println!("You win! 🎉");
+                break;
+            }
+        }
+    }
 }
