@@ -1,20 +1,24 @@
 extern crate actix_web;
-use actix_web::{server, App, HttpRequest};
-
-fn index(_req: &HttpRequest) -> &'static str {
-    "Hello world!"
-}
+use actix_web::{server, App, fs};
 
 fn create_app() -> App {
     App::new()
-        .resource("/", |r| r.f(index))
+        .handler(
+            "/",
+            fs::StaticFiles::new(".")
+                .unwrap()
+                .show_files_listing()
+        )
 }
 
 fn main() {
-    println!("Starting the server at port 3000...");
+    let port = 3000;
+    let host = format!("127.0.0.1:{}", port);
+
+    println!("Starting the server at http://{}...", host);
 
     server::new(create_app)
-        .bind("127.0.0.1:3000")
+        .bind(host)
         .unwrap()
         .run();
 }
