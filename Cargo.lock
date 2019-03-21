@@ -507,14 +507,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "hello-rust"
-version = "0.1.0"
-dependencies = [
- "actix-web 0.7.18 (registry+https://github.com/rust-lang/crates.io-index)",
- "clap 2.32.0 (registry+https://github.com/rust-lang/crates.io-index)",
-]
-
-[[package]]
 name = "hostname"
 version = "0.1.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1141,6 +1133,14 @@ dependencies = [
 name = "stable_deref_trait"
 version = "1.1.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
+
+[[package]]
+name = "static-server"
+version = "0.1.0"
+dependencies = [
+ "actix-web 0.7.18 (registry+https://github.com/rust-lang/crates.io-index)",
+ "clap 2.32.0 (registry+https://github.com/rust-lang/crates.io-index)",
+]
 
 [[package]]
 name = "string"
