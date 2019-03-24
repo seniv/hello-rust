@@ -17,14 +17,23 @@ fn main() {
             .long("address")
             .help("Sets address of the server")
             .takes_value(true))
+        .arg(Arg::with_name("local")
+            .short("l")
+            .long("local")
+            .help("Try to bind local address"))
         .arg(Arg::with_name("path")
             .help("Sets path")
             .index(1))
         .get_matches();
 
-    let address = matches.value_of("address").unwrap_or("127.0.0.1");
+    let use_local = matches.is_present("local");
+    let address = if use_local {
+        get_if_addrs::get_if_addrs().unwrap()[0].ip().to_string()
+    } else {
+        matches.value_of("address").unwrap_or("127.0.0.1").to_string()
+    };
     let port = matches.value_of("port").unwrap_or("3000");
-    let path = String::from(matches.value_of("path").unwrap_or("."));
+    let path = matches.value_of("path").unwrap_or(".").to_string();
 
     let host = format!("{}:{}", address, port);
 
