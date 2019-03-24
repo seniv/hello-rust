@@ -1,9 +1,10 @@
 [package]
 name = "static-server"
 version = "0.1.0"
-authors = ["Ivan Seniv <seniv97@gmail.com>"]
+authors = ["Ivan Seniv <senivq@gmail.com>"]
 edition = "2018"
 
 [dependencies]
 actix-web = "0.7"
 clap = "2.32.0"
+get_if_addrs = "0.5.3"
